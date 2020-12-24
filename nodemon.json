@@ -1,6 +1,6 @@
 {
-	"watch": ["src"],
-	"ext": ".ts,.js",
-	"ignore": [],
-	"exec": "ts-standard && ts-node ./src/index.ts"
+  "watch": ["src"],
+  "ext": ".ts,.js",
+  "ignore": [],
+  "exec": "eslint . --ext .ts && ts-node ./src/index.ts"
 }
