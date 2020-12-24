@@ -1,1 +1,1 @@
-console.log("asds");
+console.log('asds')
