@@ -3,4 +3,5 @@
 ## Development
 
 - Install: `npm install`
-- Run in development mode: `npm run start:dev`
+- Run: `npm run start`
+- Test with jest: `npm run test`
