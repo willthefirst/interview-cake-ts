@@ -1,6 +1,6 @@
 {
   "watch": ["src"],
   "ext": ".ts,.js",
-  "ignore": [],
-  "exec": "eslint . --ext .ts && ts-node ./src/index.ts"
+  "ignore": ["jest.config.js"],
+  "exec": "eslint . --ext .ts && ts-node-script"
 }
