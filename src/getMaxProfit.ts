@@ -18,3 +18,5 @@ const getMaxProfit = (prices: number[]): number => {
   }
   return totalMax;
 };
+
+getMaxProfit([2, 4, 6, 1]);
