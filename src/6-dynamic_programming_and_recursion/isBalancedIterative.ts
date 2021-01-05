@@ -20,32 +20,50 @@ class BinaryTreeNode {
   }
 }
 
-function isBalanced(treeRoot: BinaryTreeNode) {
-  const depths = Array.from(new Set(findLeafDepths(treeRoot, 0)));
-  const diff = Math.abs(depths.reduce((acc, curr) => acc - curr));
-  return depths.length <= 1 || (depths.length <= 2 && diff <= 1);
+function isBalancedIterative(treeRoot: BinaryTreeNode): boolean {
+  // Go down until leaf
+  // mindepth = 0
+  // max depth = max(currentMaxDepth, this depth)
+  // if maxDepth > 1, return false;
+  const nodesAndDepths: [BinaryTreeNode, number][] = [[treeRoot, 0]];
+
+  let minDepth: number | null = Infinity;
+  let maxDepth: number | null = -Infinity;
+
+  while (nodesAndDepths.length) {
+    // pop the last node off.
+    const nodeAndDepth = nodesAndDepths.pop();
+
+    if (nodeAndDepth) {
+      const [node, depth] = nodeAndDepth;
+
+      if (!node.left && !node.right) {
+        // If it's a leaf, update minDepth and maxDepth
+        if (depth < minDepth) {
+          minDepth = depth;
+        }
+
+        if (depth > maxDepth) {
+          maxDepth = depth;
+        }
+      } else {
+        // Add children to the stack
+        if (node.left !== null) {
+          nodesAndDepths.push([node.left, depth + 1]);
+        }
+        if (node.right !== null) {
+          nodesAndDepths.push([node.right, depth + 1]);
+        }
+      }
+
+      if (maxDepth - minDepth > 1) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }
-
-const findLeafDepths = (
-  treeRoot: BinaryTreeNode | null,
-  depth: number
-): number[] => {
-  // Base cases
-  if (treeRoot === null) {
-    return [];
-  }
-
-  if (!treeRoot.left && !treeRoot.right) {
-    // It's a leaf
-    return [depth];
-  } else {
-    // It's a root (with leaves)
-    return [
-      ...findLeafDepths(treeRoot.left, depth + 1),
-      findLeafDepths(treeRoot.right, depth + 1)
-    ].flat();
-  }
-};
 
 // Tests
 
@@ -57,7 +75,7 @@ leftNode.insertRight(2);
 let rightNode = treeRoot.insertRight(6);
 rightNode.insertLeft(3);
 rightNode.insertRight(4);
-assertEquals(isBalanced(treeRoot), true, desc);
+assertEquals(isBalancedIterative(treeRoot), true, desc);
 
 desc = 'both leaves at the same depth';
 treeRoot = new BinaryTreeNode(3);
@@ -65,21 +83,21 @@ leftNode = treeRoot.insertLeft(4);
 leftNode.insertLeft(1);
 rightNode = treeRoot.insertRight(6);
 rightNode.insertRight(9);
-assertEquals(isBalanced(treeRoot), true, desc);
+assertEquals(isBalancedIterative(treeRoot), true, desc);
 
 desc = 'leaf heights differ by one';
 treeRoot = new BinaryTreeNode(6);
 leftNode = treeRoot.insertLeft(1);
 rightNode = treeRoot.insertRight(0);
 rightNode.insertRight(7);
-assertEquals(isBalanced(treeRoot), true, desc);
+assertEquals(isBalancedIterative(treeRoot), true, desc);
 
 desc = 'leaf heights differ by two';
 treeRoot = new BinaryTreeNode(6);
 leftNode = treeRoot.insertLeft(1);
 rightNode = treeRoot.insertRight(0);
 rightNode.insertRight(7).insertRight(8);
-assertEquals(isBalanced(treeRoot), false, desc);
+assertEquals(isBalancedIterative(treeRoot), false, desc);
 
 desc = 'three leaves total';
 treeRoot = new BinaryTreeNode(1);
@@ -87,7 +105,7 @@ leftNode = treeRoot.insertLeft(5);
 rightNode = treeRoot.insertRight(9);
 rightNode.insertLeft(8);
 rightNode.insertRight(5);
-assertEquals(isBalanced(treeRoot), true, desc);
+assertEquals(isBalancedIterative(treeRoot), true, desc);
 
 desc = 'both subtrees superbalanced';
 treeRoot = new BinaryTreeNode(1);
@@ -95,7 +113,7 @@ leftNode = treeRoot.insertLeft(5);
 rightNode = treeRoot.insertRight(9);
 rightNode.insertLeft(8).insertLeft(7);
 rightNode.insertRight(5);
-assertEquals(isBalanced(treeRoot), false, desc);
+assertEquals(isBalancedIterative(treeRoot), false, desc);
 
 desc = 'both subtrees superbalanced two';
 treeRoot = new BinaryTreeNode(1);
@@ -103,7 +121,7 @@ leftNode = treeRoot.insertLeft(2);
 leftNode.insertLeft(3);
 leftNode.insertRight(7).insertRight(8);
 treeRoot.insertRight(4).insertRight(5).insertRight(6).insertRight(9);
-assertEquals(isBalanced(treeRoot), false, desc);
+assertEquals(isBalancedIterative(treeRoot), false, desc);
 
 desc = 'three leaves at different levels';
 treeRoot = new BinaryTreeNode(1);
@@ -113,16 +131,16 @@ leftNode.insertRight(4);
 leftLeft.insertLeft(5);
 leftLeft.insertRight(6);
 treeRoot.insertRight(7).insertRight(8).insertRight(9).insertRight(10);
-assertEquals(isBalanced(treeRoot), false, desc);
+assertEquals(isBalancedIterative(treeRoot), false, desc);
 
 desc = 'only one node';
 treeRoot = new BinaryTreeNode(1);
-assertEquals(isBalanced(treeRoot), true, desc);
+assertEquals(isBalancedIterative(treeRoot), true, desc);
 
 desc = 'linked list tree';
 treeRoot = new BinaryTreeNode(1);
 treeRoot.insertRight(2).insertRight(3).insertRight(4);
-assertEquals(isBalanced(treeRoot), true, desc);
+assertEquals(isBalancedIterative(treeRoot), true, desc);
 
 function assertEquals(a: boolean, b: boolean, desc: string) {
   if (a === b) {
@@ -131,3 +149,4 @@ function assertEquals(a: boolean, b: boolean, desc: string) {
     console.log(`${desc} ... FAIL: ${a} != ${b}`);
   }
 }
+export {};

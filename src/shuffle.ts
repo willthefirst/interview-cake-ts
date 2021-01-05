@@ -2,7 +2,7 @@ function getRandom(floor: number, ceiling: number) {
   return Math.floor(Math.random() * (ceiling - floor + 1)) + floor;
 }
 
-function shuffle(array: Array<any>): Array<any> {
+function shuffle(array: Array<number | undefined>): Array<number | undefined> {
   const originalLength = array.length;
   if (originalLength <= 1) {
     return array;

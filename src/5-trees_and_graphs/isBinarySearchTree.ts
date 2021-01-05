@@ -63,5 +63,9 @@ function isBinarySearchTree(treeRoot: BinaryTreeNode): boolean {
   }
   return true;
 }
+
+const tree = new BinaryTreeNode(4);
+console.log(isBinarySearchTree(tree));
+
 // So that I don't get the TS duplicate error
 export {};

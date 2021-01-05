@@ -11,3 +11,5 @@
 
 - Add scratchpad to Typescript starter
 - Update package.json, tsconfig, and nodemon configs.
+- Remove jest
+- Remove eslint? Redundant and df slows things down?
