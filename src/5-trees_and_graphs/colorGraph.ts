@@ -2,6 +2,7 @@ class GraphNode {
   label: string;
   neighbors: Set<GraphNode>;
   color: number | null;
+  next: GraphNode;
   constructor(label: string) {
     this.label = label;
     this.neighbors = new Set();

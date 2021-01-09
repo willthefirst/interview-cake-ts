@@ -1,4 +1,7 @@
-const arr = [1, 2, 3];
-const arr1 = arr;
-arr1.push(4);
-console.log(arr);
+let text = 'outside';
+function logIt() {
+  let text;
+  console.log(text);
+  text = 'inside';
+}
+logIt();
